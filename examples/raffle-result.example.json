@@ -1,0 +1,13 @@
+{
+  "schema": "getty.raffle-result.v1",
+  "generatedAt": "2030-01-01T12:00:00.000Z",
+  "raffle": {
+    "winner": "ExampleViewer",
+    "prize": "Community badge",
+    "imageUrl": null,
+    "timestamp": 1893499200000,
+    "drawnAt": 1893499200000,
+    "reason": "draw"
+  }
+}
+

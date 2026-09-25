@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:getty:schema:raffle-result:v1",
+  "title": "getty Raffle Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "generatedAt", "raffle"],
+  "properties": {
+    "schema": { "const": "getty.raffle-result.v1" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "raffle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["winner", "prize", "imageUrl", "timestamp", "drawnAt", "reason"],
+      "properties": {
+        "winner": { "type": "string" },
+        "prize": { "type": "string" },
+        "imageUrl": { "type": ["string", "null"] },
+        "timestamp": { "type": "number" },
+        "drawnAt": { "type": "number" },
+        "reason": { "type": "string" }
+      }
+    }
+  }
+}

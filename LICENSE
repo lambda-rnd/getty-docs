@@ -1,0 +1,28 @@
+getty Docs uses two licenses according to the type of material.
+
+Documentation
+-------------
+
+Markdown files, prose, diagrams, and documentation media are licensed under
+the Creative Commons Attribution 4.0 International license (CC BY 4.0).
+The complete license text is available at:
+
+  LICENSES/CC-BY-4.0.txt
+  https://creativecommons.org/licenses/by/4.0/
+
+Code and machine-readable artifacts
+-----------------------------------
+
+JSON schemas, executable examples, scripts, configuration, and source code are
+licensed under the Apache License, Version 2.0.
+The complete license text is available at:
+
+  LICENSES/Apache-2.0.txt
+  https://www.apache.org/licenses/LICENSE-2.0
+
+File-specific license notices take precedence over this repository-level
+allocation.
+
+The licenses do not grant permission to use the getty name, logos, or visual
+identity to imply endorsement, sponsorship, or official status.
+
