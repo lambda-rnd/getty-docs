@@ -37,7 +37,6 @@ Getty connects livestream activity, configurable overlays, hosted services, and 
 
 ## Contributor resources
 
-- [Documentation style guide](../STYLE_GUIDE.md)
 - [Contribution guide](../CONTRIBUTING.md)
 - [Publication policy](../PUBLICATION_POLICY.md)
 - [Security policy](../SECURITY.md)
