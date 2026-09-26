@@ -11,7 +11,7 @@ Public, implementation-neutral documentation intended for streamers, integrators
 | ---------------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------- |
 | [Architecture](docs/architecture.md)                       | [Overlays and OBS](docs/overlays.md)       | [Security and privacy](docs/security-and-privacy.md) |
 | [Analytics](docs/analytics/index.md)                       | [Supported public API](docs/public-api.md) | [Publication policy](PUBLICATION_POLICY.md)          |
-| [AO, Arweave, and HyperBEAM](docs/ao-arweave-hyperbeam.md) | [Schemas and examples](schemas/README.md)  | [Documentation style](STYLE_GUIDE.md)                |
+| [AO, Arweave, and HyperBEAM](docs/ao-arweave-hyperbeam.md) | [Schemas and examples](schemas/README.md)  | [Contribution guide](CONTRIBUTING.md)                |
 
 For the complete map, start with the [documentation index](docs/index.md).
 
@@ -35,8 +35,6 @@ This repository explains public behavior and stable integration contracts. It in
 ## Contributing
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Security reports must follow [SECURITY.md](SECURITY.md) and must not be submitted as public issues.
-
-Documentation changes should follow [STYLE_GUIDE.md](STYLE_GUIDE.md) so pages remain consistent and portable to the getty blog.
 
 ## License
 

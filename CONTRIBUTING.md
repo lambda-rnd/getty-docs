@@ -5,11 +5,10 @@ Getty Docs accepts corrections, clearer explanations, synthetic examples, transl
 ## Before submitting
 
 1. Read [PUBLICATION_POLICY.md](PUBLICATION_POLICY.md).
-2. Read [STYLE_GUIDE.md](STYLE_GUIDE.md).
-3. Use fictional hosts, wallets, process IDs, transaction IDs, tenants, usernames, and tokens.
-4. Do not paste logs, screenshots, configuration files, or content copied wholesale from private systems.
-5. Document only public, user-facing behavior. An implementation detail is not a supported contract unless maintainers explicitly mark it as one.
-6. Open security reports privately as described in [SECURITY.md](SECURITY.md).
+2. Use fictional hosts, wallets, process IDs, transaction IDs, tenants, usernames, and tokens.
+3. Do not paste logs, screenshots, configuration files, or content copied wholesale from private systems.
+4. Document only public, user-facing behavior. An implementation detail is not a supported contract unless maintainers explicitly mark it as one.
+5. Open security reports privately as described in [SECURITY.md](SECURITY.md).
 
 ## Writing style
 
