@@ -67,8 +67,32 @@ Stream History separates live operational data from permanent archives:
 
 AO stores the index and archive pointer, not a second copy of every stream sample. Arweave is the permanent content source for a completed archive.
 
-> [!NOTE]
-> Permanent uploads are subject to the wallet and payment policy selected for the data owner. A server-side process must not silently convert a rejected or unfunded upload into an authorized payment.
+### Stream History upload cost
+
+Stream History is free by design. Getty compresses and divides analytics into objects that remain eligible for Turbo's free upload route. Each permanent Stream History object stays within the 100 KiB free limit; sample chunks target 90 KB to leave room for the archive envelope metadata.
+
+The final archive manifest is also bounded for the free route. If an archive cannot satisfy those bounds, getty reports the archive as needing attention. It does not silently switch Stream History to a paid Arweave transaction, consume Turbo credits, or spend native AR.
+
+The wallet configured for the data owner signs the archive. A namespaced Stream History upload does not fall back to a server wallet when the tenant wallet is missing or temporarily unavailable.
+
+### Native AR policy for permanent media
+
+The native AR spending policy applies to an individual permanent media file that exceeds Turbo's 100 KiB free limit. It does not apply to Stream History analytics. Arweave-backed media can include notification images or video, Tip Goal and achievement audio, raffle and announcement images, Liveviews icons, and external-live media.
+
+The account owner selects one of three modes:
+
+| Mode | Behavior for a media file over 100 KiB |
+| --- | --- |
+| Free only | The upload is rejected without spending AR. |
+| Ask for approval | Getty shows the estimated AR cost and uploads only after approval for that request. Cancelling leaves no paid-upload backlog. |
+| Protected automatic | Getty may pay automatically only within the configured per-upload maximum and protected wallet reserve. |
+
+Files at or below 100 KiB continue through Turbo's free route in every mode. A direct paid upload is limited to 12 MiB per file.
+
+Automatic payment requires explicit recorded consent. Replacing the wallet resets the policy to **Free only**, and wallet-bound payment authorization is not restored through a configuration import. The account's wallet signs and pays an authorized direct upload; the server wallet is not a payment fallback.
+
+> [!IMPORTANT]
+> Approval is scoped to the current media upload. A rejected, cancelled, over-limit, or unfunded request must not become an authorized payment later.
 
 ## AO state
 
@@ -76,7 +100,7 @@ An AO process has a durable identifier and receives signed messages. Its state c
 
 - A process owner can perform process-level administration.
 - A getty runtime signer can submit only the application actions it is authorized to perform.
-- A tenant wallet can authorize permanent publication and any applicable storage spending for that tenant's data.
+- A tenant wallet signs permanent publication and can authorize applicable media storage spending for that tenant's data. Stream History archives remain on the free route.
 
 > [!IMPORTANT]
 > Public wallet addresses and process identifiers are not secrets, but they are correlatable. Private JWK material, signer configuration, owner mappings, and authorization rules must remain outside public documentation and client-side code.
