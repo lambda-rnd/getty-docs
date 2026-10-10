@@ -27,6 +27,14 @@ flowchart LR
 - **AO** provides network-resident state and computation for supported modules; it does not run as an application-server daemon.
 - **HyperBEAM** materializes selected AO process state through HTTP-readable interfaces.
 
+## Workspace and storage boundaries
+
+A workspace owns its configurations and history independently of the provider used to sign in. Verified access identities, chat/notification connections, and selected Stream History sources have separate purposes; see [Accounts and sign-in](accounts-and-sign-in.md).
+
+Operational configuration and identity, historical observations, coordination/cache state, and permanent archives are distinct data responsibilities. A cache or live connection does not establish ownership, and an unavailable authoritative source must not be replaced with another account's configuration. This is a conceptual separation, not a description of a particular server topology.
+
+Arweave stores the content intentionally published to it, rather than sign-in credentials or a complete copy of private account settings.
+
 ## Trust boundary
 
 Public widget tokens and URLs are designed for presentation and read access. They are not administrative credentials. Wallet signing material, private tenant mappings, and write authorization remain outside public overlays.

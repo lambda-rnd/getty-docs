@@ -37,10 +37,12 @@ Deployments can enable AO independently for supported modules.
 | --- | --- |
 | Polls | Poll lifecycle, options, votes, countdown state, and result state when the AO backend is enabled |
 | Raffle | Raffle state, participants, draw state, and winner history when the AO backend is enabled |
-| Achievements | Achievement definitions and progress state when the AO backend is enabled |
+| Achievements | Optional achievement computation where the deployment supports the appropriate account scope |
 | Stream History | A lightweight index that links a stream to its verified Arweave archive |
 
 The presence of an AO process does not imply that every module or every deployment uses AO as its active backend. getty can retain hosted coordination where it is required for authentication, delivery, or compatibility.
+
+Hosted achievement progress and overlay delivery do not require an AO backend. The existence of an achievement process alone does not establish support for account-scoped progress in a hosted deployment.
 
 ## Arweave records
 
@@ -66,6 +68,10 @@ Stream History separates live operational data from permanent archives:
 5. getty verifies both the AO reference and the Arweave content before treating the archive as complete.
 
 AO stores the index and archive pointer, not a second copy of every stream sample. Arweave is the permanent content source for a completed archive.
+
+Archives keep their original verified publication owner independently of the current sign-in method or storage wallet. An updated wallet does not rewrite earlier archives or make it their publication owner.
+
+Where the observed-source history feature is enabled, an archive can retain source/channel observations and collection-quality information. Earlier archives without that information do not acquire it retroactively. Selected channel identifiers and metrics can become permanently public with the archive; this does not include private sign-in mappings or credentials. This page does not define a new supported archive payload contract.
 
 ### Stream History upload cost
 

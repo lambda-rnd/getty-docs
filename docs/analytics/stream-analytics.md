@@ -19,9 +19,19 @@ Getty records periodic observations while a stream is live. Session and daily su
 
 ## Cross-platform viewers
 
-When multiple providers are enabled, getty can add the current Odysee, Twitch, and Kick viewer samples. This produces a useful operational total, but it does not identify or deduplicate people across platforms.
+Current live displays can add available Odysee, Twitch, and Kick viewer samples. A partial current total covers only the responding sources and must not be presented as a complete historical observation. Where observed-source history is enabled, a complete combined audience value requires usable observations from all sources selected for that interval. Neither form identifies or deduplicates people across platforms.
 
 For example, a viewer watching the same stream on Odysee and Twitch contributes to both platform samples. The combined value should therefore be labeled “cross-platform viewers” or “combined concurrent viewers,” not “unique viewers.”
+
+## Selected sources and observed history
+
+Where available, Stream History settings allow explicit selection of supported connected sources. A Twitch-only or Kick-only selection can collect observations without an Odysee channel. Signing in with a provider or connecting its chat does not automatically select it for history.
+
+This observed-source view complements existing stream summaries. It can distinguish complete, partial, and unknown observations, report collection coverage, and filter by platform and channel. A confirmed live observation on at least one selected source can contribute to global observed live time; simultaneous live intervals are counted once rather than added together.
+
+An unavailable provider response is not evidence that the stream ended and is not a measured audience of zero. Gaps remain unknown once an observation is no longer usable. Enabling a source later does not reconstruct missing observations, and older history without channel or quality information remains limited to what was originally recorded.
+
+Follower changes, chatter metrics, tips, and provider activity have separate sources. Their presence in an existing summary does not make them available in every observed-source report. Twitch/Kick activity events are not a substitute for viewer samples; unsupported native metrics should remain unavailable.
 
 ## Sessions and reporting buckets
 

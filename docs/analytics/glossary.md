@@ -20,6 +20,19 @@ Use this glossary to distinguish sampled values, event-derived metrics, and prov
 
 “Peak viewers” must not be described as “unique viewers.” A concurrent peak does not reveal how many distinct people watched over the entire stream. A range-level chatter maximum describes the largest recorded session; it is not the number of distinct people across every session in the range.
 
+## Observed-source history
+
+| Term | Meaning |
+| --- | --- |
+| Selected source | A supported connected channel explicitly included in future Stream History observations |
+| Collection coverage | Share of the selected source interval covered by usable audience observations |
+| Complete observation | Usable responses from all sources selected for the interval |
+| Partial observation | Some selected sources responded while others were unavailable |
+| Unknown interval | Time for which the stored observations cannot establish the metric |
+| Global observed live time | Union of intervals observed as live on at least one selected source; simultaneous intervals are counted once |
+
+These terms describe the observed-source view where available. They do not retroactively change the meaning of older stream summaries.
+
 ## Platform activity
 
 | Term                | Meaning                                                                           |

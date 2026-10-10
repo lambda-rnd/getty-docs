@@ -8,6 +8,7 @@ Getty connects livestream activity, configurable overlays, hosted services, and 
 
 | If you want to… | Start here |
 | --- | --- |
+| Understand sign-in and connected accounts | [Accounts and sign-in](accounts-and-sign-in.md) |
 | Configure an OBS browser source | [Overlays and OBS](overlays.md) |
 | Understand metrics and their limitations | [Analytics](analytics/index.md) |
 | Consume a supported public surface | [Supported public API](public-api.md) |
@@ -19,6 +20,7 @@ Getty connects livestream activity, configurable overlays, hosted services, and 
 
 | Area | Document | Status |
 | --- | --- | --- |
+| Workspace access, verification, and tool connections | [Accounts and sign-in](accounts-and-sign-in.md) | Concept |
 | System boundaries and data flow | [Architecture](architecture.md) | Concept |
 | OBS and public overlays | [Overlays](overlays.md) | Preview |
 | Permanent data and decentralized compute | [AO, Arweave, and HyperBEAM](ao-arweave-hyperbeam.md) | Concept |
