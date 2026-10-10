@@ -13,6 +13,8 @@ Public, implementation-neutral documentation intended for streamers, integrators
 | [Analytics](docs/analytics/index.md)                       | [Supported public API](docs/public-api.md) | [Publication policy](PUBLICATION_POLICY.md)          |
 | [AO, Arweave, and HyperBEAM](docs/ao-arweave-hyperbeam.md) | [Schemas and examples](schemas/README.md)  | [Contribution guide](CONTRIBUTING.md)                |
 
+For workspace access, account verification, and tool connections, see [Accounts and sign-in](docs/accounts-and-sign-in.md).
+
 For the complete map, start with the [documentation index](docs/index.md).
 
 ## Public data artifacts

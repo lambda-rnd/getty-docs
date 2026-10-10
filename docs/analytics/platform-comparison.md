@@ -20,10 +20,14 @@ This table describes getty's conceptual data model, not every feature offered by
 
 ## Combined values
 
-- Viewer totals are summed only from enabled, live, and available providers.
+- A current viewer total can sum enabled, live, and available providers, with partial coverage identified.
+- Complete combined audience values in observed-source history require usable observations from every source selected for that interval.
+- Simultaneous live intervals contribute once to global observed duration.
 - Combined values do not perform cross-platform identity matching.
 - A provider outage should produce an unavailable state rather than silently becoming a measured zero.
 - Provider-specific metrics should retain their original unit and meaning instead of being forced into a misleading common total.
+
+Where supported, explicitly selected Twitch or Kick sources can provide observed history without an Odysee channel. Provider sign-in, tool connection, source selection, and metric availability remain separate states; see [Accounts and sign-in](../accounts-and-sign-in.md).
 
 ## Connection state
 

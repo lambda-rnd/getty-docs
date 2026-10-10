@@ -24,6 +24,14 @@ Names in this table describe concepts. They are a payload contract only when a s
 - A stale value remains a real previous observation, but it is not a current measurement.
 - A cached fallback should retain its original observation time rather than appearing newly measured.
 
+## Observed-history coverage
+
+Coverage describes the part of the selected source interval for which usable audience observations exist. It is not a measure of unique viewers or proof that all activity was recorded. Complete, partial, and unknown observations must remain distinguishable.
+
+A sample cannot be extended indefinitely across an API outage. A confirmed offline observation and a failed request have different meanings: the former is an observation, while the latter leaves an unknown interval. A day without usable data should appear as a gap rather than a measured zero.
+
+Selecting a different channel or source changes what future observations describe. Older rows and archives keep their original context; records that lack channel or quality metadata cannot be assigned that information retroactively.
+
 ## Sources of variance
 
 Differences between getty and a provider dashboard can result from sampling intervals, reporting timezones, stream boundary detection, delayed events, provider corrections, unavailable observations, or different aggregation rules.

@@ -23,6 +23,14 @@ The availability of a Permaweb URL does not imply that every piece of live state
 
 Getty can expose overlays for chat, polls, raffles, achievements, alerts, goals, recent activity, and other stream presentation modules. Availability depends on the getty deployment and enabled modules.
 
+## Workspace continuity and achievement notices
+
+Using another verified sign-in method for the same workspace does not itself regenerate widget access or publish a new immutable widget entry document. A separately created workspace has its own presentation state. Always use the URL generated for the intended workspace.
+
+Updated achievement widgets can recover confirmed notices after a connection interruption using a cursor local to that browser source. This is version-dependent behavior, not a public delivery API or an exactly-once guarantee. Clearing browser storage or using another browser source can change its recovery position. Current disabled or Do Not Disturb preferences can suppress catch-up notices.
+
+An older Permaweb entry document may continue to use its earlier widget behavior. A hosted update does not, by itself, replace an immutable entry document.
+
 ## Safety
 
 Do not publish complete widget URLs in screenshots, issues, or examples. Use placeholders such as:
