@@ -37,6 +37,12 @@ Widget availability varies by deployment. Tokenized widget URLs must be generate
 
 Some public module state requires a getty-issued read token. This documentation does not guarantee undocumented query parameters or response fields.
 
+## State, publication, and storage
+
+The current production model confirms the interaction in the primary application store and publishes its AO projection asynchronously. A public presentation result, an AO publication status, and a permanent Arweave record describe different stages. A reference in a response is not itself a complete content-verification report.
+
+See [Publication and verification](publication-and-verification.md). This update does not add public write endpoints or expose administrative inspection routes. Raw HyperBEAM state is not a replacement for the supported contracts listed here.
+
 ## Compatibility
 
 - Clients must tolerate additive response fields.

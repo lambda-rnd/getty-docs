@@ -2,76 +2,79 @@
 
 **Status:** Concept · **Audience:** Developers and researchers
 
-getty combines hosted coordination with permanent storage and decentralized compute. Arweave, AO, and HyperBEAM are related, but they are not interchangeable and do not hold the same data.
+Getty uses PostgreSQL-confirmed application state, AO projections, and permanent Arweave records for different purposes. The current production integration operates through a getty-managed HyperBEAM node. This page describes the roles of those components without making deployment endpoints or raw process representations a supported public API.
 
-| Component | getty use |
-| --- | --- |
-| Arweave | Permanent assets, selected result records, and stream archives |
-| AO | Optional decentralized state, computation, and lightweight archive indexes |
-| HyperBEAM | HTTP-readable access to materialized AO process state |
-
-> [!IMPORTANT]
-> An AO process is network-resident. It is not a daemon running inside the getty application server, and an interactive AOS session does not need to remain open for the process to continue existing.
+| Component  | Role in the current integration                                                          |
+| ---------- | ---------------------------------------------------------------------------------------- |
+| PostgreSQL | Primary application state for the integrated modules                                     |
+| AO         | Versioned public projections, selected encrypted copies, and lightweight archive indexes |
+| HyperBEAM  | AO process execution and HTTP-readable state inspection                                  |
+| Arweave    | Permanent assets, selected final results, and stream archive content                     |
 
 ## How the pieces fit together
 
-For an AO-backed interaction, getty's hosted layer authenticates and authorizes the action before submitting a signed message to an AO process. HyperBEAM materializes selected process state into HTTP-readable views. getty can then normalize that state for its public APIs, administration UI, and overlays.
+For polls and raffles, getty authorizes an interaction and confirms the primary change in PostgreSQL. An asynchronous worker then submits a signed, versioned snapshot to AO. HyperBEAM evaluates the message and exposes the resulting state for inspection. Getty's hosted services continue to provide supported APIs, WebSocket delivery, and overlay updates.
 
 ```text
-Streamer action
-      |
-      v
-getty hosted authorization -- signed message --> AO process
-      ^                                             |
-      |                                             v
-      +----------- normalized read ---------- HyperBEAM
+Authorized action -> PostgreSQL commit -> Versioned snapshot -> AO projection
+                             |                                  |
+                             |                           HyperBEAM inspection
+                             v
+                 Eligible permanent record -> Arweave
 ```
 
-The hosted layer remains responsible for authentication, write authorization, public response contracts, WebSocket delivery, and compatibility behavior. AO does not expose private signing material to an overlay or browser.
+The projection represents committed state. Retrying its publication does not cast another vote or draw another winner. Publication can lag behind the primary change, and intermediate changes can coalesce into a later snapshot. A projection is not a complete event log.
+
+AO processes have durable identifiers and message-based state. A process identity is separate from the Getty HTTP service and from the HyperBEAM runtime that evaluates it; an interactive AOS terminal does not need to remain open.
 
 ## Module responsibilities
 
-Deployments can enable AO independently for supported modules.
+| Module           | Current AO responsibility                                         | Primary behavior                                                                        |
+| ---------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Polls            | Public projection of lifecycle, options, counts, and result state | PostgreSQL confirms the interaction.                                                    |
+| Raffle           | Public projection of confirmed raffle state and results           | PostgreSQL confirms the operation. A projection retry does not repeat the draw.         |
+| Achievements     | Encrypted copy of selected configuration and progress             | PostgreSQL remains primary for hosted progress and delivery.                            |
+| User preferences | Encrypted copy of an explicit set of eligible preferences         | Authentication and operational settings remain outside the copy's scope.                |
+| Stream History   | Lightweight references to verified permanent archives             | Operational data and archive jobs are maintained separately from the permanent content. |
 
-| Module | Decentralized responsibility |
-| --- | --- |
-| Polls | Poll lifecycle, options, votes, countdown state, and result state when the AO backend is enabled |
-| Raffle | Raffle state, participants, draw state, and winner history when the AO backend is enabled |
-| Achievements | Optional achievement computation where the deployment supports the appropriate account scope |
-| Stream History | A lightweight index that links a stream to its verified Arweave archive |
+Modules may share a projection process. The existence of a process is not evidence that the process is the authoritative backend for every module or workspace. Deployment-specific legacy modes must be evaluated separately.
 
-The presence of an AO process does not imply that every module or every deployment uses AO as its active backend. getty can retain hosted coordination where it is required for authentication, delivery, or compatibility.
+## Encrypted achievement and preference copies
 
-Hosted achievement progress and overlay delivery do not require an AO backend. The existence of an achievement process alone does not establish support for account-scoped progress in a hosted deployment.
+Selected records are encrypted before publication using authenticated encryption. The current integration uses AES-256-GCM and pseudonymous workspace identifiers. Each copy is associated with its source, module, scope, and version.
+
+Configuration and achievement progress that already existed can be included in the initial copy; later synchronization includes subsequent committed changes. This is a selected state snapshot, not a full backup of the account or every event between synchronizations.
+
+The publication scope excludes credentials, private wallet keys, authentication/session records, private sign-in mappings, and other operational data outside the explicit selection. Ciphertext and metadata can still remain publicly observable. Retaining the original decryption material is necessary to recover an older encrypted copy.
 
 ## Arweave records
 
-When permanent results are enabled and a compatible wallet is configured, getty can publish selected poll or raffle result payloads. See the schemas in [`schemas/`](../schemas/README.md).
+Where permanent results are enabled and the authorized storage requirements are met, getty can publish selected poll or raffle result payloads. See the [public schemas](../schemas/README.md).
 
-Publishing is an explicit module-level action. A result shown by getty is not necessarily permanent unless it includes a confirmed Arweave transaction reference.
+A result shown by getty, a successful AO projection, and a permanent result record are separate facts. A projection can include an Arweave reference, but validating the referenced file is an additional step. See [Publication and verification](publication-and-verification.md).
 
-The public poll and raffle schemas describe final result records intended for permanent publication. They do not describe transient module state or the complete state of an AO process.
+The poll and raffle schemas describe final result records intended for permanent publication. They do not describe transient module state or the complete AO process representation.
 
-Arweave can also hold immutable widget entry documents and verified Stream History archives. A Permaweb widget can load its entry document from Arweave while continuing to use supported getty services for live state and delivery.
+Arweave can also hold immutable widget entry documents and verified Stream History archives. A Permaweb widget can load its entry document from Arweave while continuing to use getty for live state and delivery.
 
 > [!WARNING]
-> Arweave data is designed to be permanent. Payloads must exclude secrets, private account mappings, unnecessary personal data, and any field that is not intended for durable public access.
+> Permanently published plaintext must be intentionally public. Exclude secrets, private account mappings, and unnecessary personal data. Encrypted copies also need deliberate selection and key protection because their ciphertext remains durable.
 
 ## Stream History archives
 
-Stream History separates live operational data from permanent archives:
+Stream History separates operational observations from permanent archives:
 
-1. getty keeps live and pending stream data in its operational store.
-2. After a stream closes, eligible archive content is packaged and published to Arweave.
-3. The archive manifest identifies its schema, content, and referenced chunks.
-4. A lightweight reference is registered in the AO Stream History process.
-5. getty verifies both the AO reference and the Arweave content before treating the archive as complete.
+1. getty retains the available stream observations and archive job state.
+2. Eligible closed sessions are packaged into a manifest and sample chunks.
+3. The configured data owner's wallet signs publication to Arweave.
+4. getty registers a lightweight archive reference in AO.
+5. The workflow checks the AO reference and validates the manifest and chunks before marking the archive complete.
 
-AO stores the index and archive pointer, not a second copy of every stream sample. Arweave is the permanent content source for a completed archive.
+AO holds the archive index, not another full copy of every stream sample. Existing permanent archives retain their original verified publication owner independently of a later sign-in or wallet change.
 
-Archives keep their original verified publication owner independently of the current sign-in method or storage wallet. An updated wallet does not rewrite earlier archives or make it their publication owner.
+Missing wallet configuration leaves work pending; it does not authorize a server-wallet substitute. A session with a summary but no recoverable samples must remain distinguishable from a complete detailed timeline. Permanent archival also does not remove the need for primary data retention and recovery procedures.
 
-Where the observed-source history feature is enabled, an archive can retain source/channel observations and collection-quality information. Earlier archives without that information do not acquire it retroactively. Selected channel identifiers and metrics can become permanently public with the archive; this does not include private sign-in mappings or credentials. This page does not define a new supported archive payload contract.
+Where observed-source history is enabled, an archive can retain channel observations and collection-quality information. Earlier archives without those fields do not acquire them retroactively. Selected channel identifiers and metrics can become permanently public with the archive; private sign-in mappings and credentials are excluded. This page does not define a new archive schema.
 
 ### Stream History upload cost
 
@@ -87,11 +90,11 @@ The native AR spending policy applies to an individual permanent media file that
 
 The account owner selects one of three modes:
 
-| Mode | Behavior for a media file over 100 KiB |
-| --- | --- |
-| Free only | The upload is rejected without spending AR. |
-| Ask for approval | Getty shows the estimated AR cost and uploads only after approval for that request. Cancelling leaves no paid-upload backlog. |
-| Protected automatic | Getty may pay automatically only within the configured per-upload maximum and protected wallet reserve. |
+| Mode                | Behavior for a media file over 100 KiB                                                                                        |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Free only           | The upload is rejected without spending AR.                                                                                   |
+| Ask for approval    | Getty shows the estimated AR cost and uploads only after approval for that request. Cancelling leaves no paid-upload backlog. |
+| Protected automatic | Getty may pay automatically only within the configured per-upload maximum and protected wallet reserve.                       |
 
 Files at or below 100 KiB continue through Turbo's free route in every mode. A direct paid upload is limited to 12 MiB per file.
 
@@ -100,18 +103,15 @@ Automatic payment requires explicit recorded consent. Replacing the wallet reset
 > [!IMPORTANT]
 > Approval is scoped to the current media upload. A rejected, cancelled, over-limit, or unfunded request must not become an authorized payment later.
 
-## AO state
+## Process ownership and storage authorization
 
-An AO process has a durable identifier and receives signed messages. Its state can evolve as those messages are evaluated. Process ownership, runtime signing, and end-user storage authorization are distinct roles:
+AO messages are signed, but several roles remain distinct:
 
-- A process owner can perform process-level administration.
-- A getty runtime signer can submit only the application actions it is authorized to perform.
-- A tenant wallet signs permanent publication and can authorize applicable media storage spending for that tenant's data. Stream History archives remain on the free route.
+- A process owner can perform the process-level administration it is authorized to perform.
+- The application signer submits the application messages permitted by the process.
+- A workspace storage wallet signs its eligible permanent uploads and authorizes applicable media spending. Stream History archives remain on the free route.
 
-> [!IMPORTANT]
-> Public wallet addresses and process identifiers are not secrets, but they are correlatable. Private JWK material, signer configuration, owner mappings, and authorization rules must remain outside public documentation and client-side code.
-
-AO process identifiers are public blockchain identifiers, but Getty documents only identifiers that maintainers intentionally declare as supported public references. Examples use placeholders:
+A public process ID, transaction ID, or wallet address is not proof of ownership of another getty workspace. Public identifiers can also be correlated, so examples use placeholders and synthetic values:
 
 ```text
 <ao-process-id>
@@ -119,22 +119,37 @@ AO process identifiers are public blockchain identifiers, but Getty documents on
 
 ## HyperBEAM reads
 
-HyperBEAM can expose AO state through HTTP routes. A missing state key does not, by itself, prove that an AO process is unavailable; it can mean that the requested key has not been materialized.
+HyperBEAM evaluates messages and exposes selected AO process state through HTTP. The integration has been validated with HyperBEAM v0.11. A route pattern for a process state read is:
 
-Process availability and state-key availability are separate checks:
+```text
+https://hyperbeam.example.invalid/<ao-process-id>~process@1.0/compute/<state-key>
+```
 
-- The process endpoint indicates whether the process can be resolved.
-- A compute path addresses one materialized portion of its state.
-- getty's public API can adapt that state into a stable, module-specific response.
+This is a synthetic, version-dependent HyperBEAM illustration, not a getty API endpoint. Compute can evaluate scheduled messages; the response may contain a JSON wrapper, linked state, or commitments rather than the final application object. A successful HTTP status alone is not a complete state check.
 
-Consumers should use supported getty APIs when they need a stable integration contract. Raw HyperBEAM state reflects the AO process representation and can change independently of the public API.
+A missing state key can produce `not_found` even when the node and process are otherwise available. Check the intended process, requested field, response representation, and version before concluding that the whole node is down.
+
+Consumers needing a supported integration should use [Getty's public API](public-api.md). Raw HyperBEAM state can evolve independently of that contract. Node administration, deployment addresses, signing configuration, and internal publication interfaces are outside this public repository.
+
+## Earlier descriptions and compatibility
+
+Earlier material described configurations in which AO was the primary interactive backend. That is not the PostgreSQL-primary, projection-based production model described here. A legacy process can also expect different handlers and state keys; changing only its identifier does not migrate its contract.
+
+Moving to a new projection or archive index does not automatically move a process's scheduler, replay its entire execution history, recover missing observations, or transfer old publication ownership. Permanent references, current primary state, process identity, and storage authorization must be reviewed separately.
 
 ## Public verification boundary
 
-Arweave transaction IDs, intentionally published AO process IDs, payload schemas, and content hashes can support independent verification. A public identifier proves neither authorization nor ownership of an unrelated getty account.
+Public schemas, intentionally published records, and content hashes help readers inspect results. [Publication and verification](publication-and-verification.md) explains the difference between an application result, an evaluated AO projection, an Arweave reference, and a fully checked stream archive.
 
-Exact production nodes, internal fallback behavior, write signers, and unpublished process mappings are outside this repository's scope.
+Exact production nodes, private account identifiers, operational logs, recovery scripts, and unpublished process mappings remain outside the public documentation. This page adds no new supported administrative or write API.
+
+## Further reading
+
+- [AO](https://ao.arweave.net/)
+- [Arweave](https://www.arweave.org/)
+- [HyperBEAM documentation](https://hyperbeam.arweave.net/)
+- [HyperBEAM v0.11 release](https://github.com/permaweb/HyperBEAM/releases/tag/v0.11)
 
 ---
 
-[Previous: Overlays and OBS](overlays.md) · [Documentation index](index.md) · [Next: Analytics](analytics/index.md)
+[Previous: Overlays and OBS](overlays.md) · [Documentation index](index.md) · [Next: Publication and verification](publication-and-verification.md)
