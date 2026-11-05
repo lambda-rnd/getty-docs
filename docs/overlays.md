@@ -19,6 +19,10 @@ Getty overlays are browser sources that present stream activity. A deployment ca
 
 The availability of a Permaweb URL does not imply that every piece of live state is stored permanently.
 
+## Live state and AO publication
+
+In the current projection-based model, getty delivers primary presentation state while AO publication proceeds asynchronously. A newer view in an overlay does not by itself confirm that its projection or permanent result record has finished publishing. Viewers use the generated getty read surface; they do not submit process-owner credentials or storage keys. See [Publication and verification](publication-and-verification.md).
+
 ## Supported overlay families
 
 Getty can expose overlays for chat, polls, raffles, achievements, alerts, goals, recent activity, and other stream presentation modules. Availability depends on the getty deployment and enabled modules.

@@ -15,6 +15,12 @@ Public, implementation-neutral documentation intended for streamers, integrators
 
 For workspace access, account verification, and tool connections, see [Accounts and sign-in](docs/accounts-and-sign-in.md).
 
+## Current AO integration
+
+The current production model uses PostgreSQL as primary application state, versioned public AO projections for polls and raffles, selected encrypted copies for achievements and preferences, and AO indexes for permanent stream archives. Getty operates its own HyperBEAM node for this integration.
+
+Start with [AO, Arweave, and HyperBEAM](docs/ao-arweave-hyperbeam.md), then [Publication and verification](docs/publication-and-verification.md) to understand what a published message, matching snapshot, or complete archive establishes. These pages explain behavior without defining deployment addresses or new public APIs.
+
 For the complete map, start with the [documentation index](docs/index.md).
 
 ## Public data artifacts

@@ -32,6 +32,12 @@ A sample cannot be extended indefinitely across an API outage. A confirmed offli
 
 Selecting a different channel or source changes what future observations describe. Older rows and archives keep their original context; records that lack channel or quality metadata cannot be assigned that information retroactively.
 
+## Published copies and observation quality
+
+An AO projection can lag behind the latest primary state. Its version and digest describe a particular published snapshot rather than a new observation time. Matching primary and AO bytes does not prove that an upstream metric was available or that every event was collected.
+
+Likewise, a complete permanent archive confirms its recorded content and index checks; it does not fill historical collection gaps. See [Publication and verification](../publication-and-verification.md).
+
 ## Sources of variance
 
 Differences between getty and a provider dashboard can result from sampling intervals, reporting timezones, stream boundary detection, delayed events, provider corrections, unavailable observations, or different aggregation rules.

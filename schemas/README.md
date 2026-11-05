@@ -11,6 +11,8 @@ Schemas document payload shape, not proof that a particular record was successfu
 
 These schemas describe final result records intended for permanent publication. They do not describe transient poll or raffle state, or the complete state of their AO processes.
 
+Versioned AO projections and synthetic verification reports are explained separately in [Publication and verification](../docs/publication-and-verification.md). This documentation update does not change the result schemas or introduce a new projection payload contract.
+
 Each schema uses a versioned `urn:getty:schema:...` identifier so its canonical identity does not depend on a documentation host. Consumers should select a schema by the payload's `schema` value and must not assume that a schema identifier is a downloadable URL.
 
 ---

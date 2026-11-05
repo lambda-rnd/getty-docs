@@ -15,6 +15,7 @@ Getty connects livestream activity, configurable overlays, hosted services, and 
 | Inspect permanent result formats | [Public schemas](../schemas/README.md) |
 | Understand system boundaries | [Architecture](architecture.md) |
 | Learn how AO and Arweave relate to getty | [AO, Arweave, and HyperBEAM](ao-arweave-hyperbeam.md) |
+| Interpret projection and archive verification | [Publication and verification](publication-and-verification.md) |
 
 ## Documentation map
 
@@ -24,6 +25,7 @@ Getty connects livestream activity, configurable overlays, hosted services, and 
 | System boundaries and data flow | [Architecture](architecture.md) | Concept |
 | OBS and public overlays | [Overlays](overlays.md) | Preview |
 | Permanent data and decentralized compute | [AO, Arweave, and HyperBEAM](ao-arweave-hyperbeam.md) | Concept |
+| Publication stages, matching snapshots, and archive checks | [Publication and verification](publication-and-verification.md) | Concept |
 | Stream, channel, platform, and chat analytics | [Analytics](analytics/index.md) | Concept |
 | Supported read-only integrations | [Public API](public-api.md) | Preview |
 | Data exposure rules | [Security and privacy](security-and-privacy.md) | Stable policy |

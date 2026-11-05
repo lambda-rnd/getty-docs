@@ -10,16 +10,16 @@ Getty separates the method used to enter a workspace from the accounts connected
 | ----------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | Sign in                       | Enter the workspace associated with a verified identity                                | Enable chat, notifications, or history collection                        |
 | Verify an account             | Explicitly associate a provider identity with the current workspace for account access | Replace an existing tool connection or transfer another workspace's data |
-| Connect chat or notifications | Authorize the applicable streaming feature                                             | Automatically make that account a Getty sign-in method                   |
+| Connect chat or notifications | Authorize the applicable streaming feature                                             | Automatically make that account a getty sign-in method                   |
 | Select a history source       | Include a supported connected channel in future observations                           | Import all provider analytics or reconstruct earlier streams             |
 
 The Accounts section in Settings brings these states together and provides links to the relevant feature settings. An account can be verified for access while its chat or notifications are disconnected, or connected to a tool without being verified for sign-in.
 
-Provider identities follow the provider's account identifier rather than a display name. Renaming a channel does not, by itself, create a new Getty workspace. Getty's own account access controls still apply when a provider is used to sign in.
+Provider identities follow the provider's account identifier rather than a display name. Renaming a channel does not, by itself, create a new getty workspace. Getty's own account access controls still apply when a provider is used to sign in.
 
 ## Keep an existing workspace
 
-If you already use Getty, sign in with your usual method and verify the additional account from that workspace's settings when the option is available. A verified additional sign-in method preserves the workspace and its data.
+If you already use getty, sign in with your usual method and verify the additional account from that workspace's settings when the option is available. A verified additional sign-in method preserves the workspace and its data.
 
 Creating a separate workspace does not merge it with an older one. Matching names or email addresses are not evidence that two workspaces should be combined. Account verification is not a workspace consolidation procedure; use the deployment's support process if an identity is already associated with another workspace.
 
@@ -32,6 +32,8 @@ An Odysee, Twitch, or Kick identity is an access method. An Arweave storage wall
 Where wallet setup is available, creating or importing a storage wallet does not change the workspace identity or the current sign-in method. Keep any wallet backup private. Replacing a wallet requires its own confirmation and resets paid-media authorization to Free only.
 
 Existing permanent archives retain their original publication owner. Replacing the current wallet does not rewrite those records or transfer ownership of previously published content. See [permanent storage](ao-arweave-hyperbeam.md#stream-history-archives) for the distinction between live data and verified archives.
+
+Selected encrypted AO copies use a separate application publication workflow. Their existence does not authorize copying another workspace's storage wallet, change its verified access identities, or merge its history. Publication signers, encryption material, and user storage authorization have distinct purposes; see [AO responsibilities](ao-arweave-hyperbeam.md#process-ownership-and-storage-authorization).
 
 ## Availability
 
